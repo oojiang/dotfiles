@@ -1,0 +1,6 @@
+set selection-clipboard clipboard
+set font "monaco 15"
+
+map = zoom in
+map u scroll half-up
+map d scroll half-down
