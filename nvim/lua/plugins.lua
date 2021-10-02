@@ -65,7 +65,7 @@ telescope.setup{
   }
 }
 telescope.load_extension('fzy_native')
--- vim.api.nvim_set_keymap('n', '<leader>f', ':Files<cr>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>f', ':Telescope find_files<cr>', {noremap = true})
 
 
 -- CHADtree

@@ -20,7 +20,9 @@ unset __conda_setup
 alias emacs="/usr/local/Caskroom/emacs/27.1-1/Emacs.app/Contents/MacOS/Emacs -nw"
 alias emacsgui="open -a emacs"
 alias vim="mvim -v"
+alias vimdiff="nvim -d"
 alias zathuraf="zathura --mode fullscreen"
+alias jn="jupyter notebook"
 
 export FZF_DEFAULT_OPTS='--height 60% --layout=reverse --border'
 
