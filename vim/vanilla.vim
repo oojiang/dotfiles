@@ -3,7 +3,7 @@
 "" General {{{
     set nocompatible
     set history=1000
-    set textwidth=120 " wrap lines after 120 characters
+    "set textwidth=120 " wrap lines after 120 characters
 
     set clipboard+=unnamed " share system keyboard
 
@@ -29,8 +29,8 @@
     set autoread
     set noswapfile
     set nobackup
-    set undodir=~/.vim/undodir
-    set undofile
+    "set undodir=~/.vim/undodir
+    "set undofile
 
 "" }}}
 
@@ -51,11 +51,12 @@
     endfunction
 
     "" Misc
+    set colorcolumn=121
     set cursorline
-    set wrap  " turn on line wrapping
-    set wrapmargin=8 " wrap lines when coming within n characters from the side
-    set linebreak " set soft wrapping
-    "set showbreak=↪
+    set nowrap  " turn off line wrapping
+    "set wrapmargin=0 " wrap lines when coming within n characters from the side
+    set nolinebreak " no soft wrapping
+    set showbreak=↪
     set autoindent " automatically set indent of new line
     set ttyfast " faster redrawing
     set diffopt+=vertical,iwhite,internal,algorithm:patience,hiddenoff " diff mode settings
@@ -69,7 +70,7 @@
     set showcmd " show incomplete commands
     set wildmode=list:longest " complete files like a shell
     set shell=$SHELL
-    set cmdheight=1 " command bar height
+    set cmdheight=2 " command bar height
     set title " set terminal title
     set showmatch " show matching braces
     set mat=2 " how many tenths of a second to blink
@@ -125,6 +126,7 @@
     " zr to open one level of folds. zR to open all folds.
     " zm to close one level of folds. zM to close all folds.
 
+    "set termguicolors
     set t_Co=256 " Explicitly tell vim that the terminal supports 256 colors
 
     if &term =~ '256color'
@@ -134,8 +136,18 @@
 ""}}}
 
 "" Custom Mappings {{{
+    map \vv :edit ~/dotfiles/vim/vanilla.vim<cr>
+    map \vp :edit ~/dotfiles/vim/plugins.vim<cr>
+    "map \r :source ~/dotfiles/vim/vimrc<cr>
+
     "" leader key
     let mapleader = "\<Space>" 
+
+    "" scroll
+    nnoremap <c-j> <c-e>
+    nnoremap <c-k> <c-y>
+    map <c-h> 9zh
+    map <c-l> 9zl
 
     "" splits
     map <silent> <leader>h :wincmd h<cr>
@@ -147,8 +159,36 @@
     map <silent> <leader>K :split<cr>
     map <silent> <leader>L :vsplit<cr>:wincmd l<cr>
 
+    "" tabs
+    map <silent> <leader>t :tabnew<cr>
+    map <silent> <leader>i :tabn<cr>
+    map <silent> <leader>u :tabp<cr>
+
+    "" buffers
+    nmap <leader><space> :buffer 
+
+    "" search
+    nnoremap * *N
+    nnoremap # #n
+
     "" clear highlighted search
     nmap <leader>n :noh<cr>
+
+    "" toggle line wrapping
+    " TODO: This function doesn't work properly with multiple buffers/frames
+    function! Line_wrap_on()
+      set wrap
+      set linebreak
+      noremap <silent> \w :call Line_wrap_off()<cr>
+      echo 'Line wrap on!'
+    endfunction
+    function! Line_wrap_off()
+      set nowrap
+      set nolinebreak
+      noremap <silent> \w :call Line_wrap_on()<cr>
+      echo 'Line wrap off!'
+    endfunction
+    noremap <silent> \w :call Line_wrap_on()<cr>
 
     " keep visual selection when indenting/outdenting
     vmap < <gv
@@ -160,19 +200,15 @@
     "" enable . command in visual mode
     vnoremap . :normal .<cr>
 
-    "" scroll the viewport faster
-    nnoremap <C-e> 3<C-e>
-    nnoremap <C-y> 3<C-y>
-
     "" Toggle visual wrap movement behavior
-    nnoremap <leader>v :call Wrap_mode_on()<cr>
+    nnoremap \v :call Wrap_mode_on()<cr>
     function! Wrap_mode_on()
         noremap <silent> j gj
         noremap <silent> k gk
         noremap <silent> ^ g^
         noremap <silent> $ g$
         noremap <silent> 0 g0
-        noremap <leader>v :call Wrap_mode_off()<cr>
+        noremap \v :call Wrap_mode_off()<cr>
     endfunction
     function! Wrap_mode_off()
         noremap <silent> j j
@@ -180,7 +216,7 @@
         noremap <silent> ^ ^
         noremap <silent> $ $
         noremap <silent> 0 0
-        noremap <leader>v :call Wrap_mode_on()<cr>
+        noremap \v :call Wrap_mode_on()<cr>
     endfunction
 
     "" Toggle light and dark mode
@@ -216,13 +252,11 @@
 
 "" Colors {{{
     if !filereadable('$HOME/.vim/plugins.vim')
-      if filereadable('$HOME/.vim/colors/solarized8_flat')
-        colorscheme solarized8_flat
-      elseif filereadable('$HOME/.vim/colors/solarized8')
-        colorscheme solarized8
-      else
-        colorscheme default
-      endif
+      "if filereadable('/Users/ogelsir/.vim/colors/gruvbox.vim')
+      "  colorscheme gruvbox
+      "else
+      "  colorscheme default
+      "endif
     endif
     syntax enable
     filetype plugin indent on
@@ -235,7 +269,7 @@
     "" See Max Cantor's 'HOW TO DO 90% OF WHAT PLUGINS DO (WITH JUST VIM)'
 
     "" fuzzy file search
-    nmap <leader>f :find 
+    nmap <leader>sf :find 
 
     "" ctags
     command! MakeTags !ctags -R .
@@ -254,10 +288,10 @@
     "" file browsing
     let g:netrw_banner=0        " disable annoying banner
     "let g:netrw_browse_split=4  " open in prior window
-    let g:netrw_altv=1          " open splits to the right
+    "let g:netrw_altv=1          " open splits to the right
     let g:netrw_liststyle=3     " tree view
-    let g:netrw_list_hide=netrw_gitignore#Hide()
-    let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+    "let g:netrw_list_hide=netrw_gitignore#Hide()
+    "let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
     " line numbers in netrw
     let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
     " :edit a folder to open a file browser

@@ -4,8 +4,8 @@ call plug#begin()
 
 "" Colorscheme {{{
     Plug 'rafi/awesome-vim-colorschemes'
-    colorscheme solarized8_flat
-    set background=light
+    colorscheme gruvbox
+    set background=dark
 "" }}}
 
 """ Lightline {{{
