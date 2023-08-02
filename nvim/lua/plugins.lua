@@ -54,6 +54,16 @@ require('lazy').setup({
     },
   },
 
+  -- DAP
+  "williamboman/mason.nvim",
+  "mfussenegger/nvim-dap",
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      "mfussenegger/nvim-dap"
+    },
+  },
+
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -179,6 +189,7 @@ require('lazy').setup({
 -- [[ Setting options ]]
 vim.o.laststatus = 3
 vim.cmd('highlight WinSeparator guibg=None')
+vim.o.winbar = "%=%m %f"
 
 -- [[ Basic Keymaps ]]
 
@@ -365,7 +376,9 @@ local servers = {
 }
 
 -- Setup neovim lua configuration
-require('neodev').setup()
+require('neodev').setup({
+  library = { plugins = { "nvim-dap-ui" }, types = true },
+})
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -438,5 +451,31 @@ cmp.setup {
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
-require("oil").setup()
+require("oil").setup({
+  view_options = {
+    -- Show files and directories that start with "."
+    show_hidden = true,
+    -- This function defines what is considered a "hidden" file
+    is_hidden_file = function(name, bufnr)
+      return vim.startswith(name, ".")
+    end,
+    -- This function defines what will never be shown, even when `show_hidden` is set
+    is_always_hidden = function(name, bufnr)
+      return false
+    end,
+  }
+})
 vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
+
+-- [[ Configure DAP ]]
+require("dapui").setup()
+local dap, dapui = require("dap"), require("dapui")
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
