@@ -169,6 +169,10 @@ require('lazy').setup({
   -- { import = 'custom.plugins' },
 }, {})
 
+-- [[ Setting options ]]
+vim.o.laststatus = 3
+vim.cmd('highlight WinSeparator guibg=None')
+
 -- [[ Basic Keymaps ]]
 
 -- [[ Highlight on yank ]]
