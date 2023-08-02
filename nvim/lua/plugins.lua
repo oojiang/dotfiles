@@ -93,7 +93,7 @@ require('lazy').setup({
   },
 
   {
-    -- Theme inspired by Atom
+    -- Colorscheme
     'ellisonleao/gruvbox.nvim',
     priority = 1000,
     config = function()
@@ -167,6 +167,13 @@ require('lazy').setup({
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   -- { import = 'custom.plugins' },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  }
+
 }, {})
 
 -- [[ Setting options ]]
@@ -430,3 +437,6 @@ cmp.setup {
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+require("oil").setup()
+vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
