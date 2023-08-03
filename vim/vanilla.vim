@@ -172,7 +172,7 @@
     nnoremap # #n
 
     "" clear highlighted search
-    nmap <leader>n :noh<cr>
+    nmap <silent> <leader>n :noh<cr>
 
     "" toggle line wrapping
     " TODO: This function doesn't work properly with multiple buffers/frames

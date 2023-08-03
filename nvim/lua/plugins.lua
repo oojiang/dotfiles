@@ -86,7 +86,16 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  {
+    'folke/which-key.nvim', opts = {
+      layout = {
+        height = { min = 4, max = 10 }, -- min and max height of the columns
+        width = { min = 20, max = 50 }, -- min and max width of the columns
+        spacing = 1, -- spacing between columns
+        align = "left", -- align columns left, center or right
+      },
+    }
+  },
   {
     -- Adds git releated signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -124,6 +133,15 @@ require('lazy').setup({
       options = {
         theme = 'gruvbox',
       },
+      sections = {
+        lualine_a = {'mode'},
+        lualine_b = {'branch', 'diff', 'diagnostics'},
+        lualine_c = {'filename'},
+        lualine_x = {'searchcount'},
+        lualine_y = {'progress'},
+        lualine_z = {'location'}
+      },
+
     },
   },
 
@@ -501,3 +519,5 @@ end
 
 -- [[ Configure lualine ]]
 vim.o.fillchars = ""
+vim.o.cmdheight = 1
+vim.o.shortmess = "filnxtToOFcsS"
