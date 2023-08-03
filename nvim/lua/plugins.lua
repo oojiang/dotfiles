@@ -122,7 +122,6 @@ require('lazy').setup({
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = false,
         theme = 'gruvbox',
       },
     },
@@ -499,3 +498,6 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
+
+-- [[ Configure lualine ]]
+vim.o.fillchars = ""
