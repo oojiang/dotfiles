@@ -35,6 +35,11 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+  {
+    "christoomey/vim-tmux-navigator",
+    lazy = false,
+  },
+
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
@@ -250,7 +255,7 @@ require('nvim-treesitter.configs').setup {
   highlight = { enable = true },
   indent = { enable = true },
   incremental_selection = {
-    enable = true,
+    enable = false,
     keymaps = {
       init_selection = '<c-v>',
       node_incremental = '<c-v>',
@@ -451,6 +456,7 @@ cmp.setup {
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
+-- [[ Configure Oil ]]
 require("oil").setup({
   view_options = {
     -- Show files and directories that start with "."
@@ -466,6 +472,22 @@ require("oil").setup({
   }
 })
 vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
+
+-- [[ Configure ]]
+vim.cmd[[
+let g:tmux_navigator_no_mappings = 1
+noremap <silent> <M-H> :<c-U>TmuxNavigateLeft<cr>
+noremap <silent> <M-J> :<c-U>TmuxNavigateDown<cr>
+noremap <silent> <M-K> :<c-U>TmuxNavigateUp<cr>
+noremap <silent> <M-L> :<c-U>TmuxNavigateRight<cr>]]
+-- g:tmux_navigator_no_mappings doesn't work, 
+-- so I need to reset these keybinds.
+vim.cmd[[
+  nnoremap <c-j> <c-e>
+  nnoremap <c-k> <c-y>
+  map <c-h> 9zh
+  map <c-l> 9zl
+]]
 
 -- [[ Configure DAP ]]
 require("dapui").setup()
