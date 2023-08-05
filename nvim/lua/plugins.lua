@@ -35,6 +35,8 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+  'b0o/incline.nvim',
+
   {
     "christoomey/vim-tmux-navigator",
     lazy = false,
@@ -133,7 +135,8 @@ require('lazy').setup({
       options = {
         theme = 'gruvbox',
       },
-      sections = {
+      sections = {},
+      tabline = {
         lualine_a = {'mode'},
         lualine_b = {'branch', 'diff', 'diagnostics'},
         lualine_c = {'filename'},
@@ -205,11 +208,6 @@ require('lazy').setup({
   }
 
 }, {})
-
--- [[ Setting options ]]
-vim.o.laststatus = 3
-vim.cmd('highlight WinSeparator guibg=None')
-vim.o.winbar = "%=%m %f"
 
 -- [[ Basic Keymaps ]]
 
@@ -431,6 +429,7 @@ luasnip.config.setup {}
 cmp.setup {
   snippet = {
     expand = function(args)
+      luasnip.lsp_expand(args.body)
     end,
   },
   mapping = cmp.mapping.preset.insert {
@@ -444,18 +443,14 @@ cmp.setup {
       select = true,
     },
     ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_locally_jumpable() then
+      if luasnip.expand_or_locally_jumpable() then
         luasnip.expand_or_jump()
       else
         fallback()
       end
     end, { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.locally_jumpable(-1) then
+      if luasnip.locally_jumpable(-1) then
         luasnip.jump(-1)
       else
         fallback()
@@ -488,7 +483,7 @@ require("oil").setup({
 })
 vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 
--- [[ Configure ]]
+-- [[ Configure vim-tmux-navigator ]]
 vim.cmd[[
 let g:tmux_navigator_no_mappings = 1
 noremap <silent> <M-H> :<c-U>TmuxNavigateLeft<cr>
@@ -521,3 +516,9 @@ end
 vim.o.fillchars = ""
 vim.o.cmdheight = 1
 vim.o.shortmess = "filnxtToOFcsS"
+
+-- [[ Configure incline (statusbar) ]]
+vim.o.laststatus = 3
+vim.cmd('highlight WinSeparator guibg=None')
+-- vim.o.winbar = "%=%m %f"
+require('incline').setup()

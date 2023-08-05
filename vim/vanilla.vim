@@ -154,6 +154,10 @@
     map <silent> <M-J> :wincmd j<cr>
     map <silent> <M-K> :wincmd k<cr>
     map <silent> <M-L> :wincmd l<cr>
+    map <silent> <leader>h :wincmd h<cr>
+    map <silent> <leader>j :wincmd j<cr>
+    map <silent> <leader>k :wincmd k<cr>
+    map <silent> <leader>l :wincmd l<cr>
     map <silent> <leader>H :vsplit<cr>
     map <silent> <leader>J :split<cr>:wincmd j<cr>
     map <silent> <leader>K :split<cr>
